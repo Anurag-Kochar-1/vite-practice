@@ -1,103 +1,54 @@
 import './App.css'
 
-interface ITransaction {
-  payerName: string
-  payeeName: string
-  note?: string
+//  Generics
+
+interface IPost {
+  title: string
+  id: number
+  description: string
 }
 
-interface IBankAccount {
-  accountNumber: number
-  accountHolder: string
-  balance: number
-  isActive: boolean
-  transations: ITransaction[]
-}
-
-interface IBook  {
+interface IUser {
+  id: number
   name: string
-  price: number
+  age: number
 }
 
-interface IEBook extends IBook {
-  site: string
-}
-
-interface IAudio {
-  duration: number
-}
-
-interface IImage {
-  total: number
-}
-
-interface IImage {
-  fps: number  
-}
-
-// Unions
-
-type ID = number | string  
 
 export default function App() {
 
-  const transaction1: ITransaction = {
-    payerName: "Anurag",
-    payeeName: "Rajveer"
+  const fetchPostData = async (path: string): Promise<IPost[]> => {
+    const res = await fetch(`http://example.com${path}`)
+    const data = await res.json()
+    console.log(data)
+    return data
   }
 
-  const transaction2: ITransaction = {
-    payerName: "Raja",
-    payeeName: "Anurag",
-    note: "Burger ke paise"
-  }
-
-  const bankAccount: IBankAccount = {
-    accountNumber: 102030,
-    accountHolder: "Anurag",
-    balance: 100000000000000,
-    isActive: true,
-    transations: [transaction1, transaction2]
-
-
-  }
-
-  const book1: IBook = {
-    name: "Range",
-    price: 1000
-  }  
-
-  const ebook:IEBook = {
-    name: "Range",
-    price: 300,
-    site: "amazon"
-  }
-
-  const video1:IImage = {
-    fps: 80,
-    total: 1000
+  const fetchUsersData = async (path: string): Promise<IUser[]> => {
+    const res = await fetch(`http://example.com${path}`)
+    const data = await res.json()
+    console.log(data)
+    return data
   }
 
 
-  function printID(id: ID) {
-    if(typeof id == "string") {
-      console.log(id.toUpperCase())
-    } else {
-      console.log(id)
-    }
+  const fetchData = async <ResultType>(path: string): Promise<ResultType> => {
+    const res = await fetch(`https://example.com${path}`)
+    const data = await res.json()
+    console.log(data)
+    return data
   }
 
-  function getFirstThree(x: string | number[]) {
-    return x.slice(0,3)
-  }
-  
-  return (
-    <main className='w-full h-screen bg-purple-100'>
-      <button onClick={ () => console.log(getFirstThree( "Anurag" )) }>
-        getFirstThree
+    return (
+    <main className='w-full h-screen flex flex-col bg-purple-100 space-y-3'>
+      <button onClick={() => {
+        fetchData<IUser[]>('/posts')
+        
+      }}>
+        FETCH
       </button>
 
 
     </main>
-  )
+    )
 }
